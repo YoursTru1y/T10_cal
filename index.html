@@ -86,15 +86,6 @@
             color: #333;
         }
 
-        /* Dropdowns */
-        .select-div select {
-            width: 100%;
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #282727;
-            font-size: 16px;
-            background-color: #aaa4a4;
-        }
 
         /* Results Container */
         .results-container p{
@@ -144,39 +135,39 @@
     <div class="tech-tree">
         <!-- Advanced Protection -->
         <div class="tech-node">
-            <label for="adv-prot-lvl">Advanced Protection Level</label>
-            <div class="select-div">
-                <select id="adv-prot-lvl"></select>
-            </div>
-            <div class="results-container" id="advProtResults"></div>
-        </div>
+    <label for="adv-prot-lvl">Advance Protection Lvl</label>
+    <div class="select-div">
+        <input type="number" id="adv-prot-lvl" min="0" max="10" value="0">
+    </div>
+    <div class="results-container" id="advProtResults"></div>
+</div>
 
-        <!-- Health Boost III -->
-        <div class="tech-node">
-            <label for="healthLvl">Health Boost III Level</label>
-            <div class="select-div">
-                <select id="healthLvl"></select>
-            </div>
-            <div class="results-container" id="healthResults"></div>
-        </div>
+<!-- Health Boost III -->
+<div class="tech-node">
+    <label for="healthLvl">Health Boost III Lvl</label>
+    <div class="select-div">
+        <input type="number" id="healthLvl" min="0" max="10" value="0">
+    </div>
+    <div class="results-container" id="healthResults"></div>
+</div>
 
-        <!-- Attack Boost III -->
-        <div class="tech-node">
-            <label for="attackLvl">Attack Boost III Level</label>
-            <div class="select-div">
-                <select id="attackLvl"></select>
-            </div>
-            <div class="results-container" id="attackResults"></div>
-        </div>
+<!-- Attack Boost III -->
+<div class="tech-node">
+    <label for="attackLvl">Attack Boost III Lvl</label>
+    <div class="select-div">
+        <input type="number" id="attackLvl" min="0" max="10" value="0">
+    </div>
+    <div class="results-container" id="attackResults"></div>
+</div>
 
-        <!-- Defense Boost III -->
-        <div class="tech-node">
-            <label for="defenseLvl">Defense Boost III Level</label>
-            <div class="select-div">
-                <select id="defenseLvl"></select>
-            </div>
-            <div class="results-container" id="defenseResults"></div>
-        </div>
+<!-- Defense Boost III -->
+<div class="tech-node">
+    <label for="defenseLvl">Defense Boost III Lvl</label>
+    <div class="select-div">
+        <input type="number" id="defenseLvl" min="0" max="10" value="0">
+    </div>
+    <div class="results-container" id="defenseResults"></div>
+</div>
     </div>
 
     <h3>Total Resources Needed: </h3>
@@ -235,32 +226,32 @@
             let totalGold = tierTenGold;
             let totalValor = tierTenValor;
             let totalFoodIron = tierTenFoodIron;
-
-            // Mapping of select elements to corresponding data arrays
+        
+            // Mapping input fields to data arrays
             const costsMapping = [
-                { gold: advancedProtectionGold, valor: advancedProtectionValor, foodIron: advancedProtectionFoodIron, resultId: "advProtResults" },
-                { gold: boostThreeGold, valor: boostThreeValor, foodIron: boostThreeFoodIron, resultId: "healthResults" },
-                { gold: boostThreeGold, valor: boostThreeValor, foodIron: boostThreeFoodIron, resultId: "attackResults" },
-                { gold: boostThreeGold, valor: boostThreeValor, foodIron: boostThreeFoodIron, resultId: "defenseResults" }
+                { gold: advancedProtectionGold, valor: advancedProtectionValor, foodIron: advancedProtectionFoodIron, resultId: "advProtResults", inputId: "adv-prot-lvl" },
+                { gold: boostThreeGold, valor: boostThreeValor, foodIron: boostThreeFoodIron, resultId: "healthResults", inputId: "healthLvl" },
+                { gold: boostThreeGold, valor: boostThreeValor, foodIron: boostThreeFoodIron, resultId: "attackResults", inputId: "attackLvl" },
+                { gold: boostThreeGold, valor: boostThreeValor, foodIron: boostThreeFoodIron, resultId: "defenseResults", inputId: "defenseLvl" }
             ];
-
-            document.querySelectorAll('select').forEach((select, index) => {
-                const level = parseInt(select.value);
+        
+            costsMapping.forEach((cost) => {
+                let level = parseInt(document.getElementById(cost.inputId).value) || 0;
                 let remainingGold = 0, remainingValor = 0, remainingFoodIron = 0;
-
+        
                 for (let i = level; i < 10; i++) {
-                    remainingGold += costsMapping[index].gold[i];
-                    remainingValor += costsMapping[index].valor[i];
-                    remainingFoodIron += costsMapping[index].foodIron[i];
-
-                    totalGold += costsMapping[index].gold[i];
-                    totalValor += costsMapping[index].valor[i];
-                    totalFoodIron += costsMapping[index].foodIron[i];
+                    remainingGold += cost.gold[i];
+                    remainingValor += cost.valor[i];
+                    remainingFoodIron += cost.foodIron[i];
+        
+                    totalGold += cost.gold[i];
+                    totalValor += cost.valor[i];
+                    totalFoodIron += cost.foodIron[i];
                 }
 
                 // Update individual tech node results
-                document.getElementById(costsMapping[index].resultId).innerHTML = `
-                <div style="font-size: 25px; font-weight: bold; background: rgba(128, 128, 128, 0.9); padding: 8px; border-radius: 10px;">
+                document.getElementById(cost.resultId).innerHTML = `
+                <div style="font-size: 25px; font-weight: bold; background: rgba(128, 128, 128, 0.9); padding: 8px; border-radius: 10px; margin-top: 10px;">
                     <span class="gold-text">${remainingGold.toLocaleString()} Gold</span> <b>
                     <span class="valor-text">${remainingValor.toLocaleString()} Valor</span> <b> 
                     <span class="food-iron-text">${remainingFoodIron.toLocaleString()} Food and Iron</span>
@@ -276,8 +267,18 @@
 
         
         document.addEventListener('DOMContentLoaded', () => {
-            populateSelectOptions();
-            updateTotals();
+            // Add event listeners to all input fields
+            document.querySelectorAll('input[type="number"]').forEach((input, index) => {
+                input.addEventListener('input', () => {
+                    // Ensure the value is within range (0 to 10)
+                    if (input.value < 0) input.value = 0;
+                    if (input.value > 10) input.value = 10;
+        
+                    updateTotals(); // Recalculate values
+                });
+            });
+        
+            updateTotals(); // Ensure totals update on page load
         });
 
         
