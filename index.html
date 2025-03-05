@@ -21,19 +21,38 @@
             color: #c9c3c3;
         }
 
-        h2 {
-            color: #aaa4a4;
-        }
-
+        h2,
         h3 {
             color: #aaa4a4;
         }
 
         p {
-            color: #aaa4a4;
             max-width: 600px;
             margin: 0 auto 20px;
+            font-size: 16px;
         }
+        
+        .enter {
+            color: #00d0ff;  
+            font-weight: bold;
+        }
+        
+        .gold-text {
+            color: #FFD700;  
+            font-weight: bold;
+        }
+        
+        .valor-text {
+            color: #ADD8E6;  
+            font-weight: bold;
+        }
+        
+        .food-iron-text {
+            color: #FFA07A;  
+            font-weight: bold;
+        }
+
+
 
         /* Tech Tree Section */
         .tech-tree {
@@ -46,11 +65,11 @@
 
         /* Each Tech Node */
         .tech-node {
-            background-color: rgb(158, 154, 154);
+            background-color: rgb(19, 199, 223);
             border-radius: 8px;
             padding: 15px;
             width: 280px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(96, 85, 85, 0.1);
             transition: transform 0.2s ease-in-out;
         }
 
@@ -71,7 +90,7 @@
             width: 100%;
             padding: 8px;
             border-radius: 4px;
-            border: 1px solid #ccc;
+            border: 1px solid #282727;
             font-size: 16px;
             background-color: #aaa4a4;
         }
@@ -80,11 +99,11 @@
         .results-container {
             margin-top: 10px;
             padding: 10px;
-            background-color: #aaa4a4;
+            background-color: #777;
             border-radius: 6px;
             font-size: 14px;
             font-weight: bold;
-            color: #aaa4a4;
+            color: white;
         }
 
         /* Totals Section */
@@ -103,7 +122,7 @@
         /* Disclaimer */
         .disclaimer {
             font-size: 12px;
-            color: #aaa4a4;
+            color: #d61919;
             font-style: italic;
         }
     </style>
@@ -113,63 +132,93 @@
     <div>
         <h1>Last War: Survival</h1>
         <h2>Tier 10 Research Calculator</h2>
-        <p>Enter your current research levels, including those in progress, to see how many resources you still need to
+        <p class="enter">Enter your current research levels, including those in progress, to see how many resources you still need to
             complete the remaining researches to unlock Tier X troops.</p>
-        <p class="disclaimer">Please note that these values may not be exact. There is conflicting information online
-            for these researches, and I forgot to capture most of the values personally.</p>
+            <p class="disclaimer">Please note that these values may not be exact. There is conflicting information
+                online
+                for these researches, and I forgot to capture most of the values personally.</p>
     </div>
 
     <div class="tech-tree">
+        <!-- Advanced Protection -->
         <div class="tech-node">
             <label for="adv-prot-lvl">Advanced Protection Level</label>
             <div class="select-div">
                 <select id="adv-prot-lvl"></select>
             </div>
+            <div class="results-container" id="advProtResults"></div>
         </div>
 
+        <!-- Health Boost III -->
         <div class="tech-node">
             <label for="healthLvl">Health Boost III Level</label>
             <div class="select-div">
                 <select id="healthLvl"></select>
             </div>
+            <div class="results-container" id="healthResults"></div>
         </div>
 
+        <!-- Attack Boost III -->
         <div class="tech-node">
             <label for="attackLvl">Attack Boost III Level</label>
             <div class="select-div">
                 <select id="attackLvl"></select>
             </div>
+            <div class="results-container" id="attackResults"></div>
         </div>
 
+        <!-- Defense Boost III -->
         <div class="tech-node">
             <label for="defenseLvl">Defense Boost III Level</label>
             <div class="select-div">
                 <select id="defenseLvl"></select>
             </div>
+            <div class="results-container" id="defenseResults"></div>
         </div>
     </div>
 
     <h3>Total Resources Needed: </h3>
-    <p>Total amount of gold still needed for Tier 10 troop research</p>
+    <p class="gold-text">Total amount of gold still needed for Tier 10 troop research</p>
     <div id="totalGoldRemainingDiv" class="total-container"></div>
 
-    <p>Total amount of valor still needed for Tier 10 troop research</p>
+    <p class="valor-text">Total amount of valor still needed for Tier 10 troop research</p>
     <div id="totalValorRemainingDiv" class="total-container"></div>
 
-    <p>Total amount of Food and Iron still needed for Tier 10 troop research</p>
+    <p class="food-iron-text">Total amount of Food and Iron still needed for Tier 10 troop research</p>
     <div id="totalFoodIronRemainingDiv" class="total-container"></div>
 
     <script>
-        const goldCosts = [1984200000, 2793300000, 2793300000, 2793300000];
-        const valorCosts = [16960, 19040, 19040, 19040];
-        const foodIronCosts = [663700000, 920000000, 920000000, 920000000];
+        const advancedProtectionGold = [
+            64600000, 92300000, 92300000, 158000000, 158000000, 221000000, 221000000, 287000000, 287000000, 403000000
+        ];
 
+        const advancedProtectionValor = [
+            1280, 1440, 1440, 1600, 1600, 1800, 1800, 2000, 2000, 2000
+        ];
+
+        const advancedProtectionFoodIron = [
+            21700000, 31000000, 31000000, 53000000, 53000000, 74000000, 74000000, 96000000, 96000000, 134000000
+        ];
+
+        const boostThreeGold = [
+            92300000, 158000000, 158000000, 221000000, 221000000, 287000000, 287000000, 403000000, 403000000, 563000000
+        ];
+
+        const boostThreeFoodIron = [
+            31000000, 53000000, 53000000, 74000000, 74000000, 96000000, 96000000, 134000000, 134000000, 175000000
+        ];
+
+        const boostThreeValor = [
+            1440, 1600, 1600, 1800, 1800, 2000, 2000, 2200, 2200, 2400
+        ];
+
+        // Final Tier 10 costs
         const tierTenGold = 563000000;
         const tierTenFoodIron = 188000000;
         const tierTenValor = 2400;
 
         function populateSelectOptions() {
-            document.querySelectorAll('select').forEach(select => {
+            document.querySelectorAll('select').forEach((select) => {
                 for (let i = 0; i <= 10; i++) {
                     const option = document.createElement("option");
                     option.value = i;
@@ -185,15 +234,37 @@
             let totalValor = tierTenValor;
             let totalFoodIron = tierTenFoodIron;
 
+            // Mapping of select elements to corresponding data arrays
+            const costsMapping = [
+                { gold: advancedProtectionGold, valor: advancedProtectionValor, foodIron: advancedProtectionFoodIron, resultId: "advProtResults" },
+                { gold: boostThreeGold, valor: boostThreeValor, foodIron: boostThreeFoodIron, resultId: "healthResults" },
+                { gold: boostThreeGold, valor: boostThreeValor, foodIron: boostThreeFoodIron, resultId: "attackResults" },
+                { gold: boostThreeGold, valor: boostThreeValor, foodIron: boostThreeFoodIron, resultId: "defenseResults" }
+            ];
+
             document.querySelectorAll('select').forEach((select, index) => {
                 const level = parseInt(select.value);
+                let remainingGold = 0, remainingValor = 0, remainingFoodIron = 0;
+
                 for (let i = level; i < 10; i++) {
-                    totalGold += goldCosts[index];
-                    totalValor += valorCosts[index];
-                    totalFoodIron += foodIronCosts[index];
+                    remainingGold += costsMapping[index].gold[i];
+                    remainingValor += costsMapping[index].valor[i];
+                    remainingFoodIron += costsMapping[index].foodIron[i];
+
+                    totalGold += costsMapping[index].gold[i];
+                    totalValor += costsMapping[index].valor[i];
+                    totalFoodIron += costsMapping[index].foodIron[i];
                 }
+
+                // Update individual tech node results
+                document.getElementById(costsMapping[index].resultId).innerHTML = `
+                    <p>${remainingGold.toLocaleString()} Gold</p>
+                    <p>${remainingValor.toLocaleString()} Valor</p>
+                    <p>${remainingFoodIron.toLocaleString()} Food and Iron</p>
+                `;
             });
 
+            // Update total values
             document.getElementById('totalGoldRemainingDiv').textContent = totalGold.toLocaleString();
             document.getElementById('totalValorRemainingDiv').textContent = totalValor.toLocaleString();
             document.getElementById('totalFoodIronRemainingDiv').textContent = totalFoodIron.toLocaleString();
@@ -204,6 +275,7 @@
             updateTotals();
         });
     </script>
+
 </body>
 
 </html>
